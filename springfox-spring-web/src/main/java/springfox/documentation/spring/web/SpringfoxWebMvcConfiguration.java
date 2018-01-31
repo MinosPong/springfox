@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.plugin.core.config.EnablePluginRegistries;
+import springfox.documentation.PathProvider;
 import springfox.documentation.schema.configuration.ModelsConfiguration;
 import springfox.documentation.service.PathDecorator;
 import springfox.documentation.spi.service.ApiListingBuilderPlugin;
@@ -40,8 +41,10 @@ import springfox.documentation.spi.service.ResourceGroupingStrategy;
 import springfox.documentation.spi.service.contexts.Defaults;
 import springfox.documentation.spring.web.json.JacksonModuleRegistrar;
 import springfox.documentation.spring.web.json.JsonSerializer;
+import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.readers.operation.HandlerMethodResolver;
 
+import javax.servlet.ServletContext;
 import java.util.List;
 
 @Configuration
@@ -94,6 +97,11 @@ public class SpringfoxWebMvcConfiguration {
   @Bean
   public HandlerMethodResolver methodResolver(TypeResolver resolver) {
     return new HandlerMethodResolver(resolver);
+  }
+
+  @Bean
+  public PathProvider pathProvider(ServletContext servletContext){
+    return new RelativePathProvider(servletContext);
   }
 
 }

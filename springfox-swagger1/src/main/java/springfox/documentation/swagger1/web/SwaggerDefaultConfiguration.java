@@ -20,6 +20,7 @@
 package springfox.documentation.swagger1.web;
 
 import com.fasterxml.classmate.TypeResolver;
+import springfox.documentation.PathProvider;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.WildcardType;
 import springfox.documentation.spi.DocumentationType;
@@ -28,12 +29,12 @@ import springfox.documentation.spi.service.contexts.Defaults;
 import springfox.documentation.spi.service.contexts.DocumentationContextBuilder;
 import springfox.documentation.spring.web.plugins.DefaultConfiguration;
 
-import javax.servlet.ServletContext;
 import java.util.List;
 import java.util.Map;
 
-import static com.google.common.collect.Lists.*;
-import static springfox.documentation.schema.AlternateTypeRules.*;
+import static com.google.common.collect.Lists.newArrayList;
+import static springfox.documentation.schema.AlternateTypeRules.newMapRule;
+import static springfox.documentation.schema.AlternateTypeRules.newRule;
 
 public class SwaggerDefaultConfiguration implements DefaultsProviderPlugin {
 
@@ -43,9 +44,9 @@ public class SwaggerDefaultConfiguration implements DefaultsProviderPlugin {
   public SwaggerDefaultConfiguration(
       Defaults defaults,
       TypeResolver typeResolver,
-      ServletContext servletContext) {
+      PathProvider pathProvider) {
     this.typeResolver = typeResolver;
-    defaultConfiguration = new DefaultConfiguration(defaults, typeResolver, servletContext);
+    defaultConfiguration = new DefaultConfiguration(defaults, typeResolver, pathProvider);
   }
 
   @Override

@@ -20,6 +20,7 @@
 package springfox.documentation.spring.web.plugins;
 
 import com.fasterxml.classmate.TypeResolver;
+import springfox.documentation.PathProvider;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.DefaultsProviderPlugin;
 import springfox.documentation.spi.service.contexts.ApiSelector;
@@ -33,15 +34,22 @@ public class DefaultConfiguration implements DefaultsProviderPlugin {
 
   private final Defaults defaults;
   private final TypeResolver typeResolver;
-  private final ServletContext servletContext;
+  private final PathProvider pathProvider;
+
+  @Deprecated
+  public DefaultConfiguration(Defaults defaults,
+                              TypeResolver typeResolver,
+                              ServletContext servletContext) {
+    this(defaults, typeResolver, new RelativePathProvider(servletContext));
+  }
 
   public DefaultConfiguration(Defaults defaults,
                        TypeResolver typeResolver,
-                       ServletContext servletContext) {
+                       PathProvider pathProvider) {
 
-    this.servletContext = servletContext;
     this.defaults = defaults;
     this.typeResolver = typeResolver;
+    this.pathProvider = pathProvider;
   }
 
   @Override
@@ -53,7 +61,7 @@ public class DefaultConfiguration implements DefaultsProviderPlugin {
             .additionalIgnorableTypes(defaults.defaultIgnorableParameterTypes())
             .rules(defaults.defaultRules(typeResolver))
             .defaultResponseMessages(defaults.defaultResponseMessages())
-            .pathProvider(new RelativePathProvider(servletContext))
+            .pathProvider(pathProvider)
             .typeResolver(typeResolver)
             .enableUrlTemplating(false)
             .selector(ApiSelector.DEFAULT);

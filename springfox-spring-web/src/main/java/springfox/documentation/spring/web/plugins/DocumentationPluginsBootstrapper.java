@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.stereotype.Component;
+import springfox.documentation.PathProvider;
 import springfox.documentation.RequestHandler;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRuleConvention;
@@ -40,7 +41,6 @@ import springfox.documentation.spi.service.contexts.DocumentationContextBuilder;
 import springfox.documentation.spring.web.DocumentationCache;
 import springfox.documentation.spring.web.scanners.ApiDocumentationScanner;
 
-import javax.servlet.ServletContext;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -78,13 +78,13 @@ public class DocumentationPluginsBootstrapper implements SmartLifecycle {
       ApiDocumentationScanner resourceListing,
       TypeResolver typeResolver,
       Defaults defaults,
-      ServletContext servletContext) {
+      PathProvider pathProvider) {
 
     this.documentationPluginsManager = documentationPluginsManager;
     this.handlerProviders = handlerProviders;
     this.scanned = scanned;
     this.resourceListing = resourceListing;
-    this.defaultConfiguration = new DefaultConfiguration(defaults, typeResolver, servletContext);
+    this.defaultConfiguration = new DefaultConfiguration(defaults, typeResolver, pathProvider);
   }
 
   private DocumentationContext buildContext(DocumentationPlugin each) {
